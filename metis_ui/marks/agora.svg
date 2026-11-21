@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+  <!-- Agora: the marketplace. Its hall, with the coin of trade at the heart of it: purchasing and suppliers. -->
+  <path d="M8 24L32 7l24 17Z"/>
+  <circle cx="32" cy="17.5" r="3.2" fill="currentColor" stroke="none"/>
+  <path d="M15 31v17M26.3 31v17M37.7 31v17M49 31v17" stroke-width="4.5"/>
+  <path d="M8 53h48M14 59.5h36"/>
+</svg>

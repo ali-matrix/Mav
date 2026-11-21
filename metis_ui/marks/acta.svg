@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+  <!-- Acta: the record of the day. A register page, the tally of who came, and the payroll's seal. -->
+  <path d="M34 58H15a4 4 0 0 1-4-4V10a4 4 0 0 1 4-4h20l13 13v11"/>
+  <path d="M34 6.5V19h13.5"/>
+  <path d="M19 29h14" stroke-width="3"/>
+  <path d="M20 38v12M25.5 38v12M31 38v12M36.5 38v3M16 49l18-8" stroke-width="3"/>
+  <path fill="currentColor" fill-rule="evenodd" stroke="none" d="M49 38a11 11 0 1 0 0 22a11 11 0 1 0 0-22ZM43.3 48.8l2.2-2.1 2.4 2.5 5-5.3 2.2 2.1-7.2 7.5Z"/>
+</svg>

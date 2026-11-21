@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+  <!-- Saga: the order simulator. A garment, and pressing play on what would happen to it. -->
+  <path d="M45 30v-4l8 5 7-10-13-9-7-3c-2 6-14 6-16 0l-7 3L4 21l7 10 8-5v30h11"/>
+  <path d="M32 24v3M32 33v3M32 42v3" stroke-width="3"/>
+  <path fill="currentColor" fill-rule="evenodd" stroke="none" d="M47 35a12 12 0 1 0 0 24a12 12 0 1 0 0-24ZM43.5 40.5l11 6.5-11 6.5Z"/>
+</svg>

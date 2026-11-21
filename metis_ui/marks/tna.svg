@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+  <!-- Time & Action: a stopwatch, and the deadline met. The tick breaks out through the dial. -->
+  <path d="M25 5h12M31 5v7"/>
+  <path d="M13 19l-4-4"/>
+  <path d="M41.6 18.9A21 21 0 1 0 49.9 27.9"/>
+  <path d="M21.5 37l8 8.5L57 12" stroke-width="4.5"/>
+</svg>

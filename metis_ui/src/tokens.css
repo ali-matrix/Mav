@@ -1,0 +1,170 @@
+/* @metis/ui — design tokens. THE one place a colour or size is defined.
+   Spec: Metis_DesignLanguage/MG_APPAREL_DESIGN_SYSTEM.md v1.0. Documented in README.md §Tokens.
+   Theme = `data-theme="light" | "dark"` on <html> (set before paint by `themeScript`).
+   Never write a raw colour in a component: add a token here, document it, use the var.
+   v0.4 (owner, 2026-10-30): the Apple design pass. Colour means something or it is absent.
+   v0.5 (owner, 2026-10-31): the rail wears the suite's MG Apparel blue (Acta/Argus
+   `--header-bg`), two more verdict tones, and one motion: the rail slides open and shut. */
+
+:root {
+  /* ── Brand: sampled from the approved logo (branding/company_logo.png → #27AAE1),
+        not the spec's provisional #12A8E8. ─────────────────────────────────────── */
+  --mx-brand-050: #EAF7FD;
+  --mx-brand-100: #CDEEFB;
+  --mx-brand-400: #55BFEA;
+  --mx-brand-500: #27AAE1;
+  --mx-brand-600: #1593CC;
+  --mx-brand-700: #0B78AA;
+  --mx-brand-800: #08679A;
+
+  /* The rail: the suite's MG Apparel blue, the exact `--header-bg` of Acta and Argus
+     (acta/app/globals.css, argus/app/globals.css): #2FA8DF light, #0E2235 dark. */
+  --mx-rail-bg: #2FA8DF;
+  --mx-rail-text: #FFFFFF;
+  /* Every dashboard mark on the rail or header: white in both themes, so it is never redefined below. */
+  --mx-mark: #FFFFFF;
+  --mx-rail-muted: rgba(255, 255, 255, 0.86);
+  --mx-rail-hover: rgba(255, 255, 255, 0.14);
+  /* The current page is a white plate with blue words: one clear mark on the blue. */
+  --mx-rail-active: #FFFFFF;
+  --mx-rail-active-text: var(--mx-brand-800);
+  --mx-rail-line: rgba(255, 255, 255, 0.26);
+
+  /* The one motion: the rail sliding open and shut (owner, 2026-10-31). */
+  --mx-ease: cubic-bezier(0.32, 0.72, 0, 1);
+  --mx-dur-rail: 1000ms;
+  --mx-dur-hover: 120ms;
+
+  /* ── Spacing (4 px base), radius, type ─────────────────────────────────────── */
+  --mx-1: 4px;  --mx-2: 8px;  --mx-3: 12px; --mx-4: 16px; --mx-5: 20px;
+  --mx-6: 24px; --mx-8: 32px; --mx-10: 40px; --mx-12: 48px; --mx-16: 64px;
+  --mx-r-control: 8px; --mx-r-card: 12px; --mx-r-panel: 16px; --mx-r-pill: 999px;
+
+  --mx-font: var(--font-inter, "Inter"), ui-sans-serif, system-ui, "Segoe UI", sans-serif;
+  --mx-mono: var(--font-mono, "JetBrains Mono"), ui-monospace, "Cascadia Mono", monospace;
+  --mx-fs-meta: 12px; --mx-fs-table: 13px; --mx-fs-body: 13px; --mx-fs-card: 15px;
+  --mx-fs-section: 17px; --mx-fs-page: 28px; --mx-fs-kpi: 28px; --mx-fs-display: 32px;
+
+  --mx-rail-w: 232px; --mx-rail-w-collapsed: 68px; --mx-topbar-h: 56px; --mx-content-max: 1600px;
+}
+
+/* ── Light ─────────────────────────────────────────────────────────────────── */
+:root, [data-theme="light"] {
+  color-scheme: light;
+  /* Not all white (owner, 2026-10-30): the canvas wears the brand's pale blue. */
+  --mx-canvas: #EEF4F9;
+  --mx-surface-1: #FDFEFF;
+  --mx-surface-2: #F4F8FB;
+  --mx-surface-3: #E8EFF5;
+  --mx-border: rgba(16, 48, 72, 0.11);
+  --mx-border-strong: rgba(16, 48, 72, 0.22);
+  --mx-text-1: #10222F;
+  --mx-text-2: #4C6070;
+  --mx-text-3: #667A8B;
+  --mx-accent: var(--mx-brand-600);
+  --mx-accent-text: var(--mx-brand-700);
+  --mx-accent-wash: rgba(21, 147, 204, 0.09);
+  --mx-focus: #1593CC;
+  --mx-material: rgba(248, 251, 253, 0.78);
+
+  /* Verdict tones colour TEXT only (owner, 2026-10-31): five steps, best to worst, each
+     ≥ 4.5:1 on surface-1. The washes are for chart fills, never behind a word. */
+  --mx-ok: #177A55;      --mx-ok-wash: #E5F3ED;
+  --mx-fair: #5B7314;    --mx-fair-wash: #EEF3DC;
+  --mx-warn: #A4620A;    --mx-warn-wash: #FBF0DF;
+  --mx-severe: #B4470F;  --mx-severe-wash: #FBE9DE;
+  --mx-danger: #C2323B;  --mx-danger-wash: #FAE8E9;
+  --mx-info: #2470AE;    --mx-info-wash: #E6F0F9;
+  --mx-neutral: #5C6C7E; --mx-neutral-wash: #EDF1F5;
+
+  /* Categorical series (charts): one order everywhere, every one ≥ 3:1 on surface-1. */
+  --mx-series-1: #1593CC; --mx-series-2: #16865B; --mx-series-3: #7C5CD6;
+  --mx-series-4: #D9822B; --mx-series-5: #C2477A; --mx-series-6: #4B6475;
+
+  --mx-shadow-1: 0 1px 2px rgba(16, 48, 72, 0.04);
+  --mx-shadow-2: 0 2px 8px rgba(16, 48, 72, 0.07);
+  --mx-shadow-pop: 0 16px 44px rgba(16, 48, 72, 0.16), 0 2px 8px rgba(16, 48, 72, 0.07);
+  --mx-scrim: rgba(12, 30, 46, 0.34);
+  --mx-ring-track: #E8EFF5;
+
+  /* Bin shades on the floor map: five even steps of one blue. */
+  --mx-heat-1: #E3F2FA; --mx-heat-1-ink: #0A5A84;
+  --mx-heat-2: #BCE1F4; --mx-heat-2-ink: #084A6E;
+  --mx-heat-3: #5DB6E2; --mx-heat-3-ink: #06344E;
+  --mx-heat-4: #0F76AA; --mx-heat-4-ink: #FFFFFF;
+
+  /* Illustrations (illustrations.tsx): painted materials, lit from the top left. */
+  --mx-ill-floor: #E4EEF5;     --mx-ill-floor-line: #CFDFEA; --mx-ill-mark: #E6AE45;
+  --mx-ill-shadow: #0F3048;
+  --mx-ill-kraft-t: #F0D8AE;   --mx-ill-kraft-l: #DFBB82;    --mx-ill-kraft-r: #C79E65;
+  --mx-ill-tape: #F8EDD6;      --mx-ill-tape-edge: #BC9458;
+  --mx-ill-wood-t: #E7CFA4;    --mx-ill-wood-l: #CFAC77;     --mx-ill-wood-r: #B7945F;
+  --mx-ill-frame-t: #3A9DCB;   --mx-ill-frame-l: #1C7CAD;    --mx-ill-frame-r: #0F618C;
+  --mx-ill-beam-t: #F4B654;    --mx-ill-beam-l: #E39A31;     --mx-ill-beam-r: #C67F20;
+  --mx-ill-deck-t: #D5E2EB;    --mx-ill-deck-l: #B6C8D5;     --mx-ill-deck-r: #9CB2C2;
+  --mx-ill-wall-t: #F6FAFC;    --mx-ill-wall-l: #E3EEF5;     --mx-ill-wall-r: #CBDDE9;
+  --mx-ill-roof-t: #1F86B8;    --mx-ill-roof-l: #15709F;     --mx-ill-roof-r: #0E5C85;
+  --mx-ill-door: #A9C2D2;      --mx-ill-door-line: #8BA8BA;  --mx-ill-glass: #9CD3EE;
+  --mx-ill-paper: #FFFFFF;     --mx-ill-ink: #13293A;        --mx-ill-paper-line: #D3DFE7;
+}
+
+/* ── Dark: layered navy, never pure black ─────────────────────────────────── */
+[data-theme="dark"] {
+  color-scheme: dark;
+  --mx-canvas: #0A1824;
+  --mx-surface-1: #102231;
+  --mx-surface-2: #16293A;
+  --mx-surface-3: #1E3446;
+  --mx-border: rgba(214, 234, 248, 0.11);
+  --mx-border-strong: rgba(214, 234, 248, 0.22);
+  --mx-text-1: #EAF3F9;
+  --mx-text-2: #A9BDCC;
+  --mx-text-3: #86A0B2;
+  --mx-accent: var(--mx-brand-400);
+  --mx-accent-text: var(--mx-brand-400);
+  --mx-accent-wash: rgba(85, 191, 234, 0.13);
+  --mx-focus: #55BFEA;
+  --mx-material: rgba(16, 34, 49, 0.78);
+
+  --mx-ok: #45C98F;      --mx-ok-wash: rgba(69, 201, 143, 0.13);
+  --mx-fair: #B3D45C;    --mx-fair-wash: rgba(179, 212, 92, 0.13);
+  --mx-warn: #EEB454;    --mx-warn-wash: rgba(238, 180, 84, 0.13);
+  --mx-severe: #F58A52;  --mx-severe-wash: rgba(245, 138, 82, 0.13);
+  --mx-danger: #FA7079;  --mx-danger-wash: rgba(250, 112, 121, 0.13);
+  --mx-info: #6CBDF0;    --mx-info-wash: rgba(108, 189, 240, 0.13);
+  --mx-neutral: #9AAFC3; --mx-neutral-wash: rgba(154, 175, 195, 0.13);
+
+  --mx-series-1: #55BFEA; --mx-series-2: #45C98F; --mx-series-3: #A893F0;
+  --mx-series-4: #F2A65A; --mx-series-5: #F07FAE; --mx-series-6: #9AAFC3;
+
+  --mx-rail-bg: #0E2235;
+  --mx-rail-muted: rgba(255, 255, 255, 0.74);
+  --mx-rail-hover: rgba(255, 255, 255, 0.08);
+  --mx-rail-active: rgba(85, 191, 234, 0.16);
+  --mx-rail-active-text: #FFFFFF;
+  --mx-rail-line: rgba(214, 234, 248, 0.11);
+
+  --mx-shadow-1: 0 1px 2px rgba(0, 0, 0, 0.24);
+  --mx-shadow-2: 0 2px 10px rgba(0, 0, 0, 0.30);
+  --mx-shadow-pop: 0 20px 54px rgba(0, 0, 0, 0.52);
+  --mx-scrim: rgba(2, 10, 18, 0.60);
+  --mx-ring-track: #1E3446;
+
+  --mx-heat-1: #17384E; --mx-heat-1-ink: #A9DAF2;
+  --mx-heat-2: #1B5474; --mx-heat-2-ink: #DCF1FB;
+  --mx-heat-3: #1E7CA8; --mx-heat-3-ink: #FFFFFF;
+  --mx-heat-4: #58BEEA; --mx-heat-4-ink: #06263A;
+
+  --mx-ill-floor: #16293A;     --mx-ill-floor-line: #24404F; --mx-ill-mark: #C9973B;
+  --mx-ill-shadow: #000000;
+  --mx-ill-kraft-t: #CDB084;   --mx-ill-kraft-l: #A98A5D;    --mx-ill-kraft-r: #8B6F47;
+  --mx-ill-tape: #DCCDB0;      --mx-ill-tape-edge: #8B6F47;
+  --mx-ill-wood-t: #B79D74;    --mx-ill-wood-l: #967D56;     --mx-ill-wood-r: #7B6543;
+  --mx-ill-frame-t: #4DAFDB;   --mx-ill-frame-l: #2588B8;    --mx-ill-frame-r: #186A94;
+  --mx-ill-beam-t: #E2A94C;    --mx-ill-beam-l: #C4862A;     --mx-ill-beam-r: #A46E1E;
+  --mx-ill-deck-t: #41596A;    --mx-ill-deck-l: #304757;     --mx-ill-deck-r: #263A49;
+  --mx-ill-wall-t: #3A5266;    --mx-ill-wall-l: #2A4052;     --mx-ill-wall-r: #203444;
+  --mx-ill-roof-t: #2B8FBF;    --mx-ill-roof-l: #1C7099;     --mx-ill-roof-r: #145978;
+  --mx-ill-door: #4C6577;      --mx-ill-door-line: #3A5163;  --mx-ill-glass: #5FAFD6;
+  --mx-ill-paper: #F2F7FA;     --mx-ill-ink: #13293A;        --mx-ill-paper-line: #CBD8E1;
+}

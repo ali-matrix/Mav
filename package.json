@@ -1,0 +1,27 @@
+{
+  "name": "mav-app",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev -H 0.0.0.0 -p 3000",
+    "build": "next build",
+    "start": "next start -H 0.0.0.0 -p 3000",
+    "ui:sync": "node -e \"require('fs').rmSync('node_modules/@metis/ui',{recursive:true,force:true})\" && npm install --no-audit --no-fund ./metis_ui",
+    "prebuild": "npm run ui:sync"
+  },
+  "dependencies": {
+    "@metis/ui": "file:metis_ui",
+    "next": "^15.5.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "@types/react": "^19.1.0",
+    "@types/react-dom": "^19.1.0",
+    "typescript": "^5.6.0"
+  },
+  "allowScripts": {
+    "better-sqlite3@13.2.0": true
+  }
+}

@@ -1,0 +1,219 @@
+/* App-level styles for Asset. Colours come ONLY from the kit's --mx-* tokens (never a raw colour). */
+html, body { margin: 0; min-height: 100%; }
+body { font-family: var(--mx-font); background: var(--mx-canvas); color: var(--mx-text-1); }
+.mx-shell { --mx-rail-w-collapsed: 60px; }
+.mx-scrim { -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px); }
+.mx-rail-label:empty { display: none; }
+.mx-shell[data-collapsed="true"] .mx-powered span { display: none; }
+.mx-shell[data-collapsed="true"] .mx-powered svg { width: 24px; height: 24px; }
+@media (min-width: 1024px) {
+  .mx-shell:not([data-collapsed="true"]) .mx-topbar > .mx-topbar-brand { display: none; }
+  .mx-shell[data-collapsed="true"] .mx-topbar > .mx-topbar-brand { display: flex; }
+  .mx-shell[data-collapsed="true"] .mx-rail-brand { visibility: hidden; }
+  body .mx-shell[data-collapsed="true"] .mx-topbar { padding-left: var(--mx-2); }
+}
+@media (min-width: 641px) and (max-width: 1023px) {
+  .mx-shell .mx-topbar { padding-left: var(--mx-2); }
+  .mx-shell .mx-rail-nav { padding-inline: 10px; }
+  .mx-shell .mx-rail-item { gap: 0; }
+  .mx-shell .mx-rail-item > svg:first-child { margin-inline: auto; }
+}
+@media (max-width: 1023px) {
+  .mx-shell .mx-rail-brand { display: none; }
+  .mx-shell .mx-topbar > .mx-topbar-brand { display: flex; }
+}
+.asset-filters { display: flex; flex-wrap: wrap; align-items: flex-end; gap: var(--mx-2); }
+.asset-filters .mx-field { min-width: 150px; }
+.asset-tag { font-family: var(--mx-font-mono); font-size: var(--mx-fs-meta); color: var(--mx-text-2); }
+.asset-secondary { color: var(--mx-text-3); font-size: var(--mx-fs-meta); }
+.asset-desktop-list { display: block; }
+.asset-mobile-list { display: none; }
+.asset-mobile-card { display: grid; width: 100%; gap: var(--mx-1); padding: var(--mx-4); text-align: left; color: var(--mx-text-1); background: var(--mx-surface); border: 0; border-bottom: 1px solid var(--mx-line); cursor: pointer; }
+.asset-mobile-heading { display: flex; align-items: center; justify-content: space-between; gap: var(--mx-2); }
+.asset-form { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--mx-4) var(--mx-3); padding-bottom: var(--mx-5); }
+.asset-form h3 { grid-column: 1 / -1; margin: var(--mx-2) 0 0; font-size: var(--mx-fs-body); }
+.asset-form .mx-field { min-width: 0; }
+.asset-form textarea { resize: vertical; }
+.asset-description {
+  width: 100%;
+  height: 120px;
+  min-height: 120px;
+  max-height: 120px;
+  resize: none;
+  box-sizing: border-box;
+  padding: 9px 10px;
+  line-height: 1.45;
+  overflow-y: auto;
+}
+.centered-modal {
+  position: fixed;
+  z-index: 61;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-height: calc(100vh - 32px);
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  color: var(--mx-text-1);
+  background: var(--mx-surface-1);
+  border: 1px solid var(--mx-border);
+  border-radius: var(--mx-r-panel);
+  box-shadow: var(--mx-shadow-pop);
+}
+.centered-modal-head {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--mx-3);
+  padding: var(--mx-5) var(--mx-6) var(--mx-4);
+  border-bottom: 1px solid var(--mx-border);
+}
+.centered-modal-head h2 { margin: 0; font-size: 17px; font-weight: 600; }
+.centered-modal-body { flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding: var(--mx-5) var(--mx-6); }
+.asset-form-wide, .asset-form-error, .asset-form-actions { grid-column: 1 / -1; }
+.asset-form-error { margin: 0; color: var(--mx-danger); font-size: var(--mx-fs-body); }
+.asset-form-actions { display: flex; flex-wrap: wrap; gap: var(--mx-2); }
+.dashboard-charts > .mx-card { min-width: 0; }
+.mx-rail .mx-rail-app { font-size: 16px; }
+.mx-rail .mx-rail-app small { font-size: 13px; }
+.mx-topbar .mx-topbar-brand-mark {
+  width: 40px;
+  height: 40px;
+  place-items: center;
+  border-radius: var(--mx-r-control);
+  background: var(--mx-rail-bg);
+}
+.mx-topbar .mx-topbar-brand-name b { font-size: 16px; }
+.mx-topbar .mx-topbar-brand-name small { font-size: 13px; }
+.mx-kpi[data-currency="pkr"] .mx-kpi-unit { font-size: 13px; }
+.mx-kpi[data-kpi="in-store"] .mx-kpi-foot,
+.mx-kpi[data-kpi="asset-value"] .mx-kpi-foot {
+  font-size: 11px;
+  white-space: nowrap;
+}
+.dashboard-recent-table { max-height: 420px; overflow: auto; }
+.mx-col[data-tip]:hover::after,
+.mx-col[data-tip]:focus-visible::after { display: none; }
+.dashboard-category-chart {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding-bottom: var(--mx-1);
+  scrollbar-width: thin;
+}
+.dashboard-department-list {
+  max-height: 220px;
+  overflow-y: auto;
+  padding-right: var(--mx-2);
+  scrollbar-width: thin;
+}
+.assignment-modal {
+  width: min(520px, calc(100vw - 32px));
+  max-height: calc(100vh - 32px);
+  overflow-y: auto;
+  gap: var(--mx-3);
+  padding: var(--mx-5);
+}
+.assignment-modal .employee-picker {
+  display: grid;
+  gap: var(--mx-2);
+  width: 100%;
+}
+.assignment-modal .employee-picker .mx-field {
+  width: 100%;
+  min-width: 0;
+  margin-bottom: var(--mx-1);
+}
+.assignment-modal .employee-picker > .mx-btn,
+.assignment-modal .employee-picker > button {
+  width: 100%;
+  justify-content: flex-start;
+  text-align: left;
+}
+/* Explicit app override: sidebar expansion and collapse stay synchronized for 1 second.
+   Defined after the kit imports so hot reload and cached package CSS cannot shorten it. */
+.mx-shell {
+  transition: grid-template-columns 1000ms cubic-bezier(0.32, 0.72, 0, 1);
+}
+.mx-rail {
+  transition: width 1000ms cubic-bezier(0.32, 0.72, 0, 1), transform 1000ms cubic-bezier(0.32, 0.72, 0, 1), visibility 0s linear;
+}
+.mx-rail-text {
+  max-width: 180px;
+  overflow: hidden;
+  transition: max-width 1000ms cubic-bezier(0.32, 0.72, 0, 1), opacity 600ms cubic-bezier(0.32, 0.72, 0, 1);
+}
+.mx-rail-toggle {
+  transition: opacity 600ms cubic-bezier(0.32, 0.72, 0, 1);
+}
+@media (min-width: 1024px) {
+  .mx-shell {
+    grid-template-columns: var(--mx-shell-cols, var(--mx-rail-w)) minmax(0, 1fr) !important;
+    transition: grid-template-columns 1000ms cubic-bezier(0.32, 0.72, 0, 1) !important;
+  }
+  .mx-shell[data-collapsed="true"] {
+    grid-template-columns: var(--mx-rail-w-collapsed) minmax(0, 1fr) !important;
+  }
+  .mx-shell[data-collapsed="true"] .mx-topbar {
+    padding-left: var(--mx-2) !important;
+  }
+  .mx-rail {
+    width: var(--mx-shell-cols, var(--mx-rail-w)) !important;
+    transition: width 1000ms cubic-bezier(0.32, 0.72, 0, 1), transform 1000ms cubic-bezier(0.32, 0.72, 0, 1), visibility 0s linear !important;
+  }
+  .mx-shell[data-collapsed="true"] .mx-rail {
+    width: var(--mx-rail-w-collapsed) !important;
+    transform: none !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+  }
+  .mx-shell[data-collapsed="true"] .mx-rail-brand {
+    justify-content: center;
+    padding-inline: 0;
+  }
+  .mx-shell[data-collapsed="true"] .mx-rail-nav {
+    padding-inline: 10px;
+  }
+  .mx-shell[data-collapsed="true"] .mx-rail-text {
+    max-width: 0;
+  }
+  .mx-shell[data-collapsed="true"] .mx-rail-toggle {
+    opacity: 0;
+    pointer-events: none;
+  }
+  .mx-shell[data-collapsed="true"] .mx-rail-item svg {
+    opacity: 1;
+  }
+  .mx-shell[data-collapsed="true"] .mx-rail-item {
+    justify-content: center;
+    padding-inline: 0;
+    gap: 0;
+  }
+  .mx-shell[data-collapsed="true"] .mx-rail-item > svg:first-child {
+    margin-inline: auto;
+  }
+  .mx-shell[data-collapsed="true"] .mx-powered {
+    justify-content: center;
+    padding-inline: 0;
+  }
+}
+@media (max-width: 1100px) {
+  .dashboard-charts { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+  .dashboard-charts > .mx-card:last-child { grid-column: 1 / -1; }
+}
+@media (max-width: 760px) {
+  .asset-desktop-list { display: none; }
+  .asset-mobile-list { display: block; }
+}
+@media (max-width: 480px) {
+  .asset-form { grid-template-columns: 1fr; }
+  .dashboard-charts { grid-template-columns: 1fr !important; }
+  .dashboard-charts > .mx-card:last-child { grid-column: auto; }
+  .assignment-modal { width: calc(100vw - 24px); padding: var(--mx-4); }
+  .centered-modal { max-height: calc(100vh - 24px); }
+  .centered-modal-head { padding: var(--mx-4); }
+  .centered-modal-body { padding: var(--mx-4); }
+  .dashboard-recent-table { max-height: 360px; }
+}

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+  <!-- Chronos: the sewing schedule. Staggered runs on the line calendar, and the line that is now. -->
+  <path d="M8 8v48"/>
+  <path d="M18 16h18M52 16h4M18 32h12M26 48h10M52 48h2" stroke-width="8"/>
+  <path d="M44 12v46" stroke-width="3"/>
+  <path fill="currentColor" stroke="none" d="M44 2.5l4.5 5-4.5 5-4.5-5Z"/>
+</svg>

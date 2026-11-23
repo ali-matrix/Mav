@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+  <!-- Production: the floor's output as a rising line, sewn in stitches by a needle. -->
+  <circle cx="8" cy="55" r="4.2" fill="currentColor" stroke="none"/>
+  <path d="M14.5 48.5l8-8M28.5 38.5l6.5 3.5M39.5 41.5l3.5-6.5" stroke-width="5"/>
+  <path fill="currentColor" fill-rule="evenodd" stroke="none" d="M60 3L49.3 29A3.2 3.2 0 0 1 43.7 26ZM45.94 26.17L48.54 21.57A1.1 1.1 0 0 1 50.46 22.63L47.86 27.23A1.1 1.1 0 0 1 45.94 26.17Z"/>
+</svg>

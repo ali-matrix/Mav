@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start -H 0.0.0.0 -p 3000",
     "ui:sync": "node -e \"require('fs').rmSync('node_modules/@metis/ui',{recursive:true,force:true})\" && npm install --no-audit --no-fund ./metis_ui",
-    "prebuild": "npm run ui:sync"
+    "prebuild": "npm run ui:sync",
+    "db:optimize": "node scripts/optimize-mongodb.mjs"
   },
   "dependencies": {
     "@metis/ui": "file:metis_ui",

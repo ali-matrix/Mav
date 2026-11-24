@@ -173,7 +173,6 @@ export default function DashboardPage() {
             onClick={() => router.push("/assets?status=In+Store")} />
           <KpiCard label="Under maintenance" value={compactNumber(t.maintenance)} foot="Currently in service" tone="warn"
             figureTone="warn"
-            status={t.maintenance ? { tone: "warn", word: "Attention" } : undefined}
             onClick={() => router.push("/assets?status=Under+Maintenance")} />
           <KpiCard label="Warranty expiring" value={compactNumber(t.warrantyExpiring)} foot="Within the next 30 days" tone="warn"
             figureTone="warn"

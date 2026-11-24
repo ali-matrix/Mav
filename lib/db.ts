@@ -1,4 +1,7 @@
-import { MongoClient, type Db, type Document } from "mongodb";
+import { MongoClient, type ClientSession, type Db, type Document } from "mongodb";
+import {
+  SEARCH_EXACT_INDEX_NAME, SEARCH_INDEX_NAME, SEARCH_INDEX_VERSION,
+} from "@/lib/searchIndex";
 
 export type CounterDoc = Document & { _id: string; value: number };
 export type CategoryDoc = Document & {
@@ -28,16 +31,24 @@ export type AssetDoc = Document & {
   serialKey?: string; locationId: number | null; assignedEmployeeId: number | null; purchaseCost: number | null;
   purchaseDate: string | null; warrantyStart: string | null; warrantyExpiry: string | null; status: string;
   remarks: string; createdAt: string; updatedAt: string; statusHistory: StatusHistoryDoc[];
-  assignments: AssignmentDoc[]; maintenance: MaintenanceDoc[];
+  assignments: AssignmentDoc[]; maintenance: MaintenanceDoc[]; searchGrams?: string[];
+  assignmentSearchGrams?: string[]; searchExactTerms?: string[]; assignmentSearchExactTerms?: string[];
+  searchAscii?: boolean; assignmentSearchAscii?: boolean; searchHasLongField?: boolean;
+  assignmentSearchHasLongField?: boolean;
+  searchIndexVersion?: number; searchRevision?: number;
 };
 export type SyncRunDoc = Document & {
   _id: number; source: string; startedAt: string; finishedAt: string; status: "success" | "error";
   added: number; updated: number; markedLeft: number; error: string | null;
 };
 
-const uri = process.env.MONGODB_URI ?? "mongodb://127.0.0.1:27017";
+const uri = process.env.MONGODB_URI ?? "mongodb://127.0.0.1:27017/";
 const databaseName = process.env.MONGODB_DB ?? "mav_asset_ims";
-const globals = globalThis as typeof globalThis & { __assetMongoDb?: Promise<Db> };
+const globals = globalThis as typeof globalThis & {
+  __assetMongoClient?: MongoClient;
+  __assetMongoDb?: Promise<Db>;
+  __assetMongoSupportsTransactions?: boolean;
+};
 
 const SEED: Record<string, string[]> = {
   Computers: ["Laptop", "Desktop", "Server"],
@@ -80,6 +91,94 @@ async function initialize(database: Db) {
     syncRuns.createIndex({ source: 1, _id: -1 }),
   ]);
 
+  const searchIndexState = await database.collection<Document & { _id: string }>("appMeta").findOne({
+    _id: "assetSearch", ready: true, version: SEARCH_INDEX_VERSION,
+  });
+  if (searchIndexState) {
+    await assets.createIndex(
+      { searchGrams: 1, searchAscii: 1, _id: 1 },
+      {
+        name: SEARCH_INDEX_NAME,
+        partialFilterExpression: { searchIndexVersion: SEARCH_INDEX_VERSION },
+        collation: { locale: "en", strength: 2 },
+      },
+    );
+    await assets.createIndex(
+      { searchExactTerms: 1, searchAscii: 1, _id: 1 },
+      {
+        name: SEARCH_EXACT_INDEX_NAME,
+        partialFilterExpression: { searchIndexVersion: SEARCH_INDEX_VERSION },
+        collation: { locale: "en", strength: 2 },
+      },
+    );
+    await assets.createIndex(
+      { searchGrams: 1, searchAscii: 1, _id: 1 },
+      {
+        name: "asset_search_long_text_ngrams_v4",
+        partialFilterExpression: {
+          searchIndexVersion: SEARCH_INDEX_VERSION, searchHasLongField: true,
+        },
+        collation: { locale: "en", strength: 2 },
+      },
+    );
+    await assets.createIndex(
+      { assignmentSearchGrams: 1, assignmentSearchAscii: 1, searchIndexVersion: 1, _id: 1 },
+      {
+        name: "asset_assignment_search_ngrams_assigned_v4",
+        partialFilterExpression: {
+          searchIndexVersion: SEARCH_INDEX_VERSION, "assignments.0": { $exists: true },
+        },
+        collation: { locale: "en", strength: 2 },
+      },
+    );
+    await assets.createIndex(
+      { assignmentSearchExactTerms: 1, assignmentSearchAscii: 1, _id: 1 },
+      {
+        name: "asset_assignment_search_exact_terms_v4",
+        partialFilterExpression: {
+          searchIndexVersion: SEARCH_INDEX_VERSION, "assignments.0": { $exists: true },
+        },
+        collation: { locale: "en", strength: 2 },
+      },
+    );
+  }
+  const dashboardSummaryState = await database.collection<Document & { _id: string }>("appMeta").findOne({
+    _id: "dashboardSummary", ready: true, version: 2,
+  });
+  if (searchIndexState && dashboardSummaryState) {
+    const activity = database.collection("dashboardActivity");
+    await Promise.all([
+      activity.createIndex({ activityAt: -1, id: -1 }, { name: "dashboard_activity_recent" }),
+      activity.createIndex({ assignedAt: -1, id: -1 }, { name: "dashboard_activity_assigned" }),
+      activity.createIndex({ returnedAt: -1, id: -1 }, { name: "dashboard_activity_returned" }),
+      activity.createIndex({ employeeId: 1, returnedAt: 1 }, { name: "dashboard_activity_employee_state" }),
+      activity.createIndex(
+        { searchGrams: 1, searchAscii: 1, assignedAt: -1, id: -1 },
+        { name: "dashboard_activity_search_assigned_v4", collation: { locale: "en", strength: 2 } },
+      ),
+      activity.createIndex(
+        { searchExactTerms: 1, searchAscii: 1, assignedAt: -1, id: -1 },
+        { name: "dashboard_activity_search_exact_v4", collation: { locale: "en", strength: 2 } },
+      ),
+      activity.createIndex(
+        { searchGrams: 1, searchAscii: 1, assignedAt: -1, id: -1 },
+        {
+          name: "dashboard_activity_long_text_ngrams_v4",
+          partialFilterExpression: { searchHasLongField: true },
+          collation: { locale: "en", strength: 2 },
+        },
+      ),
+      activity.createIndex(
+        { assignedAt: -1, id: -1 },
+        { name: "dashboard_activity_assigned_ci", collation: { locale: "en", strength: 2 } },
+      ),
+      activity.createIndex(
+        { returnedAt: -1, id: -1 },
+        { name: "dashboard_activity_returned_ci", collation: { locale: "en", strength: 2 } },
+      ),
+    ]);
+  }
+
   if (await categories.estimatedDocumentCount() === 0) {
     const records: CategoryDoc[] = [];
     let id = 0;
@@ -105,10 +204,15 @@ async function connect() {
     await client.connect();
     const database = client.db(databaseName);
     await database.command({ ping: 1 });
+    const topology = await client.db("admin").command({ hello: 1 });
+    globals.__assetMongoClient = client;
+    globals.__assetMongoSupportsTransactions = Boolean(topology.setName || topology.msg === "isdbgrid");
     await initialize(database);
     return database;
   } catch (error) {
     await client.close();
+    delete globals.__assetMongoClient;
+    delete globals.__assetMongoSupportsTransactions;
     throw error;
   }
 }
@@ -122,6 +226,27 @@ export function db(): Promise<Db> {
     });
   }
   return globals.__assetMongoDb;
+}
+
+export function supportsMultiDocumentTransactions() {
+  return globals.__assetMongoSupportsTransactions ?? false;
+}
+
+export async function withTransactionIfSupported<T>(
+  work: (session?: ClientSession) => Promise<T>,
+): Promise<T> {
+  const client = globals.__assetMongoClient;
+  if (!client || !supportsMultiDocumentTransactions()) return work();
+
+  const session = client.startSession();
+  try {
+    return session.withTransaction(
+      () => work(session),
+      { readConcern: { level: "snapshot" }, writeConcern: { w: "majority" } },
+    );
+  } finally {
+    await session.endSession();
+  }
 }
 
 export async function nextId(database: Db, sequence: string): Promise<number> {
